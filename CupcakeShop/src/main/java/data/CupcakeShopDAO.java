@@ -37,6 +37,7 @@ public class CupcakeShopDAO {
      */
     private final String GET_USER_BY_USERNAME = "SELECT username, password, balance FROM CupcakeShop.user WHERE username = ?";
     private final String GET_ALL_USERS = "SELECT username, password, balance FROM CupcakeShop.user";
+     private final String ADD_NEW_USER = "INSERT INTO user(username,password,balance) VALUES (?,?,?);";
     
     private DBConnector db;
 
@@ -101,6 +102,15 @@ public class CupcakeShopDAO {
     }
 
     public void addNewUser(User user) {
-
+        try {
+            Connection con = db.getConnection();
+            PreparedStatement pStatement = con.prepareStatement(ADD_NEW_USER);
+            pStatement.setString(1, user.getUsername());
+            pStatement.setString(2, user.getPassword());
+            pStatement.setInt(3, user.getBalance());
+            pStatement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }
