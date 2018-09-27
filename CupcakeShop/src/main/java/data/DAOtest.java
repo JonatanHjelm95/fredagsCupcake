@@ -18,11 +18,16 @@ public class DAOtest {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        CupcakeShopDAO dao = new CupcakeShopDAO();
+        User user = null, user2 = null;
         try {
-            CupcakeShopDAO dao = new CupcakeShopDAO();
+            user = dao.getUser("davsdu");
+            user2 = dao.getUser("hans123");
         } catch (Exception ex) {
-            Logger.getLogger(DAOtest.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("User didnt exist");
         }
+        System.out.println(user);
+        System.out.println(user2);
     }
-    
+
 }
