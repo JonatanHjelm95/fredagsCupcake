@@ -11,7 +11,7 @@ public class LineItem {
 
     @Override
     public String toString() {
-        return "LineItem{" + "cake=" + cake + ", quantity=" + quantity + '}';
+        return "{" + "cake=" + cake + ", quantity=" + quantity + '}';
     }
 
     public LineItem(CupCake cake, int quantity) {

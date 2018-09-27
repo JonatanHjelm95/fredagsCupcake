@@ -30,7 +30,7 @@
             <a id="home"  href="?origin=index">Home</a>
             <a id="products" class="active" href=#?origin=products">Products</a>
         </div>
-        <form action="AddToBasket" method="POST" id="extras">
+        <form action="?origin=addtocart" method="POST" id="extras">
             <select name=\"bottom\" form=\"extras\">
                 <%
                     ArrayList<Bottom> bottoms = (ArrayList) request.getAttribute("bottoms");
@@ -38,7 +38,7 @@
                         out.println("<option value=\"" + bottoms.get(i).getName() + "\">" + bottoms.get(i).getName() + ", " + bottoms.get(i).getPrice() + " kr" + "</option>");
                     }%>
             </select>
-            <select name=\"toppings\" form=\"extras\">
+            <select name=\"topping\" form=\"extras\">
                 <%
                     ArrayList<Topping> toppings = (ArrayList) request.getAttribute("toppings");
                     for (int i = 0; i < toppings.size(); i++) {
@@ -46,6 +46,7 @@
                     }%>
             </select>
             <button type=\"submit\" name=\"submit\">Add to Shopping Cart </button>
+            
         </form>
 
     </body>

@@ -15,7 +15,7 @@ public class CupCake {
    private Bottom bottom;
    private int fullPrice;
 
-    public CupCake(String name, Topping top, Bottom bottom, int fullPrice) {
+    public CupCake(Topping top, Bottom bottom) {
         this.name = top.getName() + bottom.getName();
         this.top = top;
         this.bottom = bottom;
@@ -37,4 +37,10 @@ public class CupCake {
     public int getFullPrice() {
         return fullPrice;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+    
 }

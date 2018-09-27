@@ -5,11 +5,18 @@
  */
 package presentation;
 
+import data.Bottom;
+import data.CupCake;
 import data.CupcakeShopDAO;
+import data.LineItem;
+import data.ShoppingBasket;
+import data.Topping;
 import data.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
@@ -75,6 +82,28 @@ public class Control extends HttpServlet {
                         request.setAttribute("toppings", dao.getToppings());
                         request.getRequestDispatcher("products.jsp").forward(request, response);
                         break;
+                    case "addtocart":
+                        if (request.getSession(false) != null) {
+                            String bottomName = request.getParameter("bottom");
+                            String toppingName = request.getParameter("topping");
+                            Bottom bottom = null;
+                            Topping topping = null;
+                            int qty = 1;
+                            try {
+                                bottom = dao.getBottom(bottomName);
+                                topping = dao.getTopping(toppingName);
+                            } catch (Exception ex) {
+                                Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            ShoppingBasket sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
+                            sb.addItem(new LineItem(new CupCake(topping, bottom),qty));
+                            request.getSession(false).setAttribute("shoppingbasket", sb);
+                            request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
+                        } else {
+                            request.setAttribute("error", "not logged in");
+                            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+                        }
+                        break;
                     default:
                         generateHtmlMenu(request);
                         request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -110,6 +139,7 @@ public class Control extends HttpServlet {
             session.setAttribute("user", user);
             boolean isLoggedIn = true;
             session.setAttribute("isLoggedIn", isLoggedIn);
+            session.setAttribute("shoppingbasket", new ShoppingBasket());
             response.sendRedirect("Control?origin=index");
         } else {
             request.setAttribute("error", "wrong password");
