@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "Control", urlPatterns = {"/Control"})
 public class Control extends HttpServlet {
 
-        private CupcakeShopDAO dao;
+    private CupcakeShopDAO dao;
 
     public Control() throws Exception {
         this.dao = new CupcakeShopDAO();
@@ -47,10 +47,11 @@ public class Control extends HttpServlet {
             if (origin != null) {
                 switch (origin) {
                     case "login":
-//                        request.setAttribute("message", "Login method not implemented");
-//                        request.getRequestDispatcher("error.jsp").forward(request, response);
+                        request.getRequestDispatcher("login.jsp").forward(request, response);
                         break;
-
+                    case "signup":
+                        request.getRequestDispatcher("signUp.jsp").forward(request, response);
+                        break;
                     case "index":
                         HttpSession session = request.getSession();
 //                        ArrayList<Recipe> recipes = dao.getAllRecipes();
@@ -63,13 +64,13 @@ public class Control extends HttpServlet {
 
 //                        request.getRequestDispatcher("showRecipe.jsp").forward(request, response);
                         break;
-                        
+
                     case "newRecipe":
 //                        request.getRequestDispatcher("addRecipe.jsp").forward(request, response);
                         break;
-                        
+
                     case "createRecipe":
-                        
+
                         break;
 
                     default:
@@ -82,6 +83,7 @@ public class Control extends HttpServlet {
             }
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
