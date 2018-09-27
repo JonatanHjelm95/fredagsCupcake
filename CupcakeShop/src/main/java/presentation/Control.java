@@ -6,6 +6,7 @@
 package presentation;
 
 import data.CupcakeShopDAO;
+import data.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -52,27 +53,16 @@ public class Control extends HttpServlet {
                     case "signup":
                         request.getRequestDispatcher("signUp.jsp").forward(request, response);
                         break;
+                    case "create user":
+                        createUser(request);
+                        request.getRequestDispatcher("signUp.jsp").forward(request, response);
+                        break;
                     case "index":
-                        HttpSession session = request.getSession();
-//                        ArrayList<Recipe> recipes = dao.getAllRecipes();
-//                        lc.sortRecipesByDate(recipes);
-//                        session.setAttribute("recipes", recipes);
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
-
-                    case "showRecipe":
-
-//                        request.getRequestDispatcher("showRecipe.jsp").forward(request, response);
+                    case "products":
+                        request.getRequestDispatcher("products.jsp").forward(request, response);
                         break;
-
-                    case "newRecipe":
-//                        request.getRequestDispatcher("addRecipe.jsp").forward(request, response);
-                        break;
-
-                    case "createRecipe":
-
-                        break;
-
                     default:
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
@@ -82,6 +72,15 @@ public class Control extends HttpServlet {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         }
+    }
+
+    private void createUser(HttpServletRequest request) throws NumberFormatException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String balance_str = request.getParameter("balance");
+        int balance = Integer.parseInt(balance_str);
+        User user = new User(username, password, balance);
+        dao.addNewUser(user);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
