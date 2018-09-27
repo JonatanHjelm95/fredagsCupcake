@@ -5,6 +5,7 @@
  */
 package logic;
 
+import data.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -17,25 +18,15 @@ public class LogicController {
     public String generateMenu(HttpServletRequest request) {
         String menuHTML = "";
         boolean isLoggedIn = (boolean) request.getSession(false).getAttribute("isLoggedIn");
+        User user = (User) request.getSession(false).getAttribute("user");
         if (isLoggedIn) {
 
-            menuHTML = "<div class=\"topnav\">\n"
-                    + "            <a id=\"login\" href=\"?origin=signup\">logout</a>\n"
-                    + "            <h1 id=\"header\" >Cupcake Shop</h1>\n"
-                    + "\n"
-                    + "            <a id=\"home\" class=\"active\" href=\"?origin=index\">Home</a>\n"
-                    + "            <a id=\"products\" href=\"?origin=products\">Products</a>\n"
-                    + "        </div>";
+            menuHTML= "<a id=\"login\" href=\"?origin=logout\">logout</a>"
+                    + "<h4 id=\"user\" > Logged in as: "+user.getUsername()+"</h4>\n";
 
         } else {
-            menuHTML = "<div class=\"topnav\">\n"
-                    + "            <a id=\"login\" href=\"?origin=signup\">sign up</a>\n"
-                    + "            <a id=\"login\" href=\"?origin=login\">Login</a>\n"
-                    + "            <h1 id=\"header\" >Cupcake Shop</h1>\n"
-                    + "\n"
-                    + "            <a id=\"home\" class=\"active\" href=\"?origin=index\">Home</a>\n"
-                    + "            <a id=\"products\" href=\"?origin=products\">Products</a>\n"
-                    + "        </div>";
+            menuHTML = "<a id=\"login\" href=\"?origin=signup\">sign up</a>\n"
+                    + "<a id=\"login\" href=\"?origin=login\">Login</a>";
 
         }
         return menuHTML;

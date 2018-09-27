@@ -49,7 +49,10 @@ public class Control extends HttpServlet {
             if (origin != null) {
                 switch (origin) {
                     case "login":
-
+                        request.getRequestDispatcher("login.jsp").forward(request, response);
+                        break;
+                        case "logout":
+                        request.getSession(false).invalidate();
                         request.getRequestDispatcher("login.jsp").forward(request, response);
                         break;
                     case "check password":
@@ -98,13 +101,12 @@ public class Control extends HttpServlet {
             session.setAttribute("user", user);
             boolean isLoggedIn = true;
             session.setAttribute("isLoggedIn", isLoggedIn);
+            response.sendRedirect("Control?origin=index");
         } else {
             request.setAttribute("error", "wrong password");
             request.getRequestDispatcher("errorPage.jsp").forward(request, response);
             return;
         }
-        request.getRequestDispatcher("index.jsp").forward(request, response);
-        return;
     }
 
     private void createUser(HttpServletRequest request) throws NumberFormatException {

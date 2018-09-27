@@ -20,10 +20,10 @@
     </head>
     <body>
         
-        <%=request.getAttribute("html")%>
         <div class="topnav">
-            <a id="login" href="?origin=signup">sign up</a>
-            <a id="login" href="?origin=login">Login</a>
+            <!--<a id="login" href="?origin=signup">sign up</a>
+            <a id="login" href="?origin=login">Login</a> -->
+            <%=request.getAttribute("html")%>
             <h1 id="header" >Cupcake Shop</h1>
 
             <a id="home" class="active" href="?origin=index">Home</a>
