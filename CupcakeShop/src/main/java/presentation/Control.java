@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import logic.LogicController;
 
 /**
  *
@@ -48,16 +49,23 @@ public class Control extends HttpServlet {
             if (origin != null) {
                 switch (origin) {
                     case "login":
+
                         request.getRequestDispatcher("login.jsp").forward(request, response);
+                        break;
+                    case "check password":
+                        checkPassword(request, response);
                         break;
                     case "signup":
                         request.getRequestDispatcher("signUp.jsp").forward(request, response);
                         break;
                     case "create user":
                         createUser(request);
-                        request.getRequestDispatcher("signUp.jsp").forward(request, response);
+                        request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
                     case "index":
+                        LogicController lc = new LogicController();
+                        String html = lc.generateMenu(request);
+                        request.setAttribute("html", html);
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
                     case "products":
@@ -72,6 +80,31 @@ public class Control extends HttpServlet {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         }
+    }
+
+    private void checkPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = null;
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        try {
+            user = dao.getUser(username);
+        } catch (Exception e) {
+            request.setAttribute("error", "wrong username");
+            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+            return;
+        }
+        if (user.getPassword().equals(password)) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user);
+            boolean isLoggedIn = true;
+            session.setAttribute("isLoggedIn", isLoggedIn);
+        } else {
+            request.setAttribute("error", "wrong password");
+            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+            return;
+        }
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+        return;
     }
 
     private void createUser(HttpServletRequest request) throws NumberFormatException {

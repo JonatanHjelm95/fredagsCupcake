@@ -32,6 +32,7 @@
             <br>
             <input type="text" name="password" placeholder="password"/>
             <br>
+            <input type="hidden" name="origin" value="check password"/>
 
             <input type="submit" value="Login"/>
         </form>
