@@ -18,18 +18,24 @@
         <title>Login</title>
     </head>
     <body>
-        
+
         <div class="topnav">
             <a id="login" class="active" href="?origin=signup">sign up</a>
             <a id="login"  href="?origin=login">Login</a>
             <h1 id="header" >Sign Up</h1>
 
             <a id="home"  href="?origin=index">Home</a>
-            <a id="products" href="#?origin=products">Products</a>
+            <a id="products" href="?origin=products">Products</a>
         </div>
         <form action="Control" method="POST">
             <input type="text" name="username" placeholder="username"/>
+            <br>
             <input type="text" name="password" placeholder="password"/>
+            <br>
+            <input type="text" name="balance" placeholder="add to balance"/>
+            <br>
+            <input type="hidden" name="origin" value="create user"/>
+
             <input type="submit" value="Sign up"/>
         </form>
 
