@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ public class Control extends HttpServlet {
                     case "login":
                         request.getRequestDispatcher("login.jsp").forward(request, response);
                         break;
-                        case "logout":
+                    case "logout":
                         request.getSession(false).invalidate();
                         request.getRequestDispatcher("login.jsp").forward(request, response);
                         break;
@@ -62,27 +63,35 @@ public class Control extends HttpServlet {
                         request.getRequestDispatcher("signUp.jsp").forward(request, response);
                         break;
                     case "create user":
-                        createUser(request);
+                        createUser(request, response);
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
                     case "index":
-                        LogicController lc = new LogicController();
-                        String html = lc.generateMenu(request);
-                        request.setAttribute("html", html);
+                        generateHtmlMenu(request);
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
                     case "products":
+                        request.setAttribute("bottoms", dao.getBottoms());
+                        request.setAttribute("toppings", dao.getToppings());
                         request.getRequestDispatcher("products.jsp").forward(request, response);
                         break;
                     default:
+                        generateHtmlMenu(request);
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
 
                 }
             } else {
+                generateHtmlMenu(request);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         }
+    }
+
+    private void generateHtmlMenu(HttpServletRequest request) {
+        LogicController lc = new LogicController();
+        String html = lc.generateMenu(request);
+        request.setAttribute("html", html);
     }
 
     private void checkPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -105,15 +114,20 @@ public class Control extends HttpServlet {
         } else {
             request.setAttribute("error", "wrong password");
             request.getRequestDispatcher("errorPage.jsp").forward(request, response);
-            return;
         }
     }
 
-    private void createUser(HttpServletRequest request) throws NumberFormatException {
+    private void createUser(HttpServletRequest request, ServletResponse response) throws NumberFormatException, ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String balance_str = request.getParameter("balance");
-        int balance = Integer.parseInt(balance_str);
+        int balance = 0;
+        try {
+            balance = Integer.parseInt(balance_str.trim());
+        } catch (NumberFormatException ne) {
+            request.setAttribute("error", "invalid number");
+            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+        }
         User user = new User(username, password, balance);
         dao.addNewUser(user);
     }

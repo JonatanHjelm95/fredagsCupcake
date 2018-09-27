@@ -6,13 +6,13 @@ package data;
  */
 public class LineItem {
     private CupCake cake;
+    private int quantity;
+    private String invoice_id;
 
     @Override
     public String toString() {
         return "LineItem{" + "cake=" + cake + ", quantity=" + quantity + '}';
     }
-    private int quantity;
-    private String invoice_id;
 
     public LineItem(CupCake cake, int quantity) {
         this.cake = cake;

@@ -6,6 +6,8 @@
 package logic;
 
 import data.User;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -17,18 +19,26 @@ public class LogicController {
 
     public String generateMenu(HttpServletRequest request) {
         String menuHTML = "";
-        boolean isLoggedIn = (boolean) request.getSession(false).getAttribute("isLoggedIn");
-        User user = (User) request.getSession(false).getAttribute("user");
-        if (isLoggedIn) {
-
-            menuHTML= "<a id=\"login\" href=\"?origin=logout\">logout</a>"
-                    + "<h4 id=\"user\" > Logged in as: "+user.getUsername()+"</h4>\n";
-
-        } else {
-            menuHTML = "<a id=\"login\" href=\"?origin=signup\">sign up</a>\n"
-                    + "<a id=\"login\" href=\"?origin=login\">Login</a>";
-
+        boolean isLoggedIn = false;
+        User user = null;
+        if (request.getSession(false) != null) {
+            try {
+                isLoggedIn = (boolean) request.getSession(false).getAttribute("isLoggedIn");
+                user = (User) request.getSession(false).getAttribute("user");
+            } catch(NullPointerException ne) {
+                ne.printStackTrace();
+            }
+            if (isLoggedIn) {
+                menuHTML = "<a id=\"login\" href=\"?origin=logout\">logout</a>"
+                        + "<h4 id=\"user\" > Logged in as: " + user.getUsername()
+                        + " Balance: " + user.getBalance() + "</h4>\n";
+                return menuHTML;
+            }
         }
+        menuHTML = "<a id=\"login\" href=\"?origin=signup\">sign up</a>\n"
+                + "<a id=\"login\" href=\"?origin=login\">Login</a>";
         return menuHTML;
     }
+    
+
 }
