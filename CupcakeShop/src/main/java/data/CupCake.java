@@ -11,11 +11,11 @@ package data;
  */
 public class CupCake {
    private String name;
-   private Top top;
+   private Topping top;
    private Bottom bottom;
    private int fullPrice;
 
-    public CupCake(String name, Top top, Bottom bottom, int fullPrice) {
+    public CupCake(String name, Topping top, Bottom bottom, int fullPrice) {
         this.name = top.getName() + bottom.getName();
         this.top = top;
         this.bottom = bottom;
@@ -26,7 +26,7 @@ public class CupCake {
         return name;
     }
 
-    public Top getTop() {
+    public Topping getTop() {
         return top;
     }
 

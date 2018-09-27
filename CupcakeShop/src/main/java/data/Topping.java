@@ -9,7 +9,7 @@ package data;
  *
  * @author porse
  */
-public class Top {
+public class Topping {
     private String name = "";
     private int price;
 
@@ -21,7 +21,7 @@ public class Top {
         return price;
     }
 
-    public Top(String name, int price) {
+    public Topping(String name, int price) {
         this.name = name;
         this.price = price;
     }
