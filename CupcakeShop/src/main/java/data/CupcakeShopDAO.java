@@ -54,6 +54,8 @@ public class CupcakeShopDAO {
     private final String ADD_TOPPING = "INSERT INTO topping(toppingName, price) VALUES (?,?)";
     private final String ADD_ORDER = "INSERT INTO `order`(price, user) VALUES (?,?)";
 
+    private final String UPDATE_USER = "UPDATE `CupcakeShop`.`user` SET `balance`=? WHERE `username`= ?";
+
     private DBConnector db;
 
     public CupcakeShopDAO() {
@@ -366,5 +368,17 @@ public class CupcakeShopDAO {
             System.out.println(e);
         }
 
+    }
+
+    public void updateUser(User user) {
+        try {
+            Connection con = db.getConnection();
+            PreparedStatement pStatement = con.prepareStatement(UPDATE_USER);
+            pStatement.setInt(1, user.getBalance());
+            pStatement.setString(2, user.getUsername());
+            pStatement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

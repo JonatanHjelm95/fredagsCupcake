@@ -104,20 +104,22 @@ public class Control extends HttpServlet {
                         if (request.getSession(false) != null) {
                             String bottomName = request.getParameter("bottom");
                             String toppingName = request.getParameter("topping");
+                            int qty = Integer.parseInt(request.getParameter("qty"));
                             System.out.println(bottomName + " " + toppingName);
                             Bottom bottom = null;
                             Topping topping = null;
-                            int qty = 1;
+                            //int qty = 1;
                             try {
                                 bottom = dao.getBottom(bottomName);
                                 topping = dao.getTopping(toppingName);
+
+                                ShoppingBasket sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
+                                sb.addItem(new LineItem(new CupCake(topping, bottom), qty));
+                                request.getSession(false).setAttribute("shoppingbasket", sb);
+                                request.setAttribute("cartContent", lc.generateShoppingCart(sb));
                             } catch (Exception ex) {
                                 Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            ShoppingBasket sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
-                            sb.addItem(new LineItem(new CupCake(topping, bottom), qty));
-                            request.getSession(false).setAttribute("shoppingbasket", sb);
-                            request.setAttribute("cartContent", lc.generateShoppingCart(sb));
                             request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
                         } else {
                             request.setAttribute("error", "not logged in");
@@ -135,14 +137,23 @@ public class Control extends HttpServlet {
 
                     case "checkout":
                         sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
-                        User user = (User) request.getSession(false).getAttribute("user");
-                        if (user.getBalance() < sb.getTotalPrice()) {
-                            request.setAttribute("error", "Not enough money");
-                            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
-                        } else {
-                            //withdraw
-                            dao.addOrder(sb, user);
+                        if (!sb.getBasket().isEmpty()) {
+                            User user = (User) request.getSession(false).getAttribute("user");
+                            if (user.getBalance() < sb.getTotalPrice()) {
+                                request.setAttribute("error", "Not enough money");
+                                request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+                            } else {
+                                //withdraw
+                                dao.addOrder(sb, user);
+                                user.withdraw(sb.getTotalPrice());
+                                dao.updateUser(user);
+                                sb.getBasket().clear();
+                                generateHtmlMenu(request);
+                                request.getRequestDispatcher("index.jsp").forward(request, response);
+                            }
                         }
+                        generateHtmlMenu(request);
+                        request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
                     default:
                         generateHtmlMenu(request);

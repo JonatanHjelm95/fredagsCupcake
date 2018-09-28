@@ -37,10 +37,14 @@
                         // for (LineItem item : sb.getBasket()) {
                         //     out.println("<li>" + item + "</li>");
                         // }
-                %>
+                        %>
 
-                <input type="submit" formaction="Control" value="continue shopping">
+                <input type="hidden" name="origin" value="checkout"/>
                 <input type="submit" value="checkout">
+            </form>
+            <form action="Control" method="POST" id="products">
+                <input type="submit" formaction="Control" value="continue shopping">
+                <input type="hidden" name="origin" value="products"/>
             </form>
 
         </div>

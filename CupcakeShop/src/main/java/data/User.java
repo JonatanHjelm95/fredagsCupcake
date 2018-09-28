@@ -20,6 +20,10 @@ public class User {
         this.balance = balance;
     }
     
+    public void withdraw(int amount) {
+        balance -= amount;
+    }
+    
     public String getUsername() {
         return username;
     }
