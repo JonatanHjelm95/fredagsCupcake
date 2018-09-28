@@ -150,19 +150,22 @@ public class Control extends HttpServlet {
             return;
         }
         if (user.getPassword().equals(password)) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("user", user);
-            boolean isLoggedIn = true;
-            session.setAttribute("isLoggedIn", isLoggedIn);
-            session.setAttribute("shoppingbasket", new ShoppingBasket());
-            response.sendRedirect("Control?origin=index");
+            succesfulLogin(request, user, response);
         } else {
             request.setAttribute("error", "wrong password");
             request.getRequestDispatcher("errorPage.jsp").forward(request, response);
         }
     }
 
-    private void createUser(HttpServletRequest request, ServletResponse response) throws NumberFormatException, ServletException, IOException {
+    private void succesfulLogin(HttpServletRequest request, User user, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user", user);
+        session.setAttribute("shoppingbasket", new ShoppingBasket());
+        generateHtmlMenu(request);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
+    private void createUser(HttpServletRequest request, HttpServletResponse response) throws NumberFormatException, ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String balance_str = request.getParameter("balance");
@@ -175,6 +178,7 @@ public class Control extends HttpServlet {
         }
         User user = new User(username, password, balance);
         dao.addNewUser(user);
+        succesfulLogin(request, user, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

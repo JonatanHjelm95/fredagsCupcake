@@ -19,20 +19,16 @@ public class LogicController {
 
     public String generateMenu(HttpServletRequest request) {
         String menuHTML = "";
-        boolean isLoggedIn = false;
         User user = null;
         if (request.getSession(false) != null) {
             try {
-                isLoggedIn = (boolean) request.getSession(false).getAttribute("isLoggedIn");
                 user = (User) request.getSession(false).getAttribute("user");
-            } catch(NullPointerException ne) {
-                ne.printStackTrace();
-            }
-            if (isLoggedIn) {
                 menuHTML = "<a id=\"login\" href=\"?origin=logout\">logout</a>"
                         + "<h4 id=\"user\" > Logged in as: " + user.getUsername()
                         + " Balance: " + user.getBalance() + "</h4>\n";
                 return menuHTML;
+            } catch(NullPointerException ne) {
+                ne.printStackTrace();
             }
         }
         menuHTML = "<a id=\"login\" href=\"?origin=signup\">sign up</a>\n"
