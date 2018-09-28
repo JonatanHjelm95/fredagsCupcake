@@ -81,7 +81,6 @@ public class Control extends HttpServlet {
                         generateHtmlMenu(request);
 
                         createUser(request, response);
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
                     case "index":
                         generateHtmlMenu(request);
@@ -99,7 +98,7 @@ public class Control extends HttpServlet {
                         break;
                     case "addtocart":
                         generateHtmlMenu(request);
-                        if(request.getSession(false) == null) {
+                        if (request.getSession(false) == null) {
                             request.getRequestDispatcher("errorPage.jsp").forward(request, response);
                         }
                         if (request.getSession(false) != null) {
@@ -132,6 +131,18 @@ public class Control extends HttpServlet {
                         request.setAttribute("cartContent", lc.generateShoppingCart(sb));
 
                         request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
+                        break;
+
+                    case "checkout":
+                        sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
+                        User user = (User) request.getSession(false).getAttribute("user");
+                        if (user.getBalance() < sb.getTotalPrice()) {
+                            request.setAttribute("error", "Not enough money");
+                            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+                        } else {
+                            //withdraw
+                            dao.addOrder(sb, user);
+                        }
                         break;
                     default:
                         generateHtmlMenu(request);
