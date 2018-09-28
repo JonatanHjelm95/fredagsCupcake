@@ -28,10 +28,11 @@ public class CupcakeShopDAO {
     getBottoms() x
     getTopoing() x
     getToppings() x
-    getAllOrders()
+    getAllOrders() x
+    getOrderByUser(User user)
     -----------
     addNewUser(User user) x
-    addToCupcakeDetails(LineItem item)
+    addToCupcakeDetails(LineItem item) x
     addBottom(Bottom bottom) x
     addTopping(Topping topping) x
     addOrder(ShoppingBasket basket, User user)
@@ -45,6 +46,7 @@ public class CupcakeShopDAO {
     private final String GET_TOPPINGS = "SELECT toppingName, price FROM CupcakeShop.topping;";
     private final String GET_NEXT_ORDERID = "SELECT `auto_increment` FROM INFORMATION_SCHEMA.TABLES\n" + "WHERE table_name = 'order'";
     private final String GET_ALL_ORDERS = "SELECT orderID, invoice, price, orderDate, user FROM `order`;";
+    private final String GET_ALL_ORDERS_BY_USERNAME = "SELECT orderID, invoice, price, orderDate, user FROM `order` WHERE user = ?";
 
     private final String ADD_NEW_USER = "INSERT INTO user(username,password,balance) VALUES (?,?,?)";
     private final String ADD_TO_CUPCAKEDETAILS = "INSERT INTO cupcakeDetails(orderID, qty, topping, bottom) VALUES(?,?,?,?)";
@@ -248,7 +250,7 @@ public class CupcakeShopDAO {
                 int orderID = rs.getInt("orderID");
                 String invoice = rs.getString("invoice");
                 int totalprice = rs.getInt("price");
-              //String status = rs.getString("status");
+                //String status = rs.getString("status");
                 String orderDate = rs.getString("orderDate");
                 String user = rs.getString("user");
                 try {
@@ -263,7 +265,33 @@ public class CupcakeShopDAO {
         return orders;
     }
 
-public void addNewUser(User user) {
+    public ArrayList<Order> getAllOrdersByUser(User user) {
+        ArrayList<Order> orders = new ArrayList();
+        try {
+            Connection con = db.getConnection();
+            PreparedStatement pStatement = con.prepareStatement(GET_ALL_ORDERS_BY_USERNAME);
+            ResultSet rs = pStatement.executeQuery();
+
+            while (rs.next()) {
+                int orderID = rs.getInt("orderID");
+                String invoice = rs.getString("invoice");
+                int totalprice = rs.getInt("price");
+                //String status = rs.getString("status");
+                String orderDate = rs.getString("orderDate");
+                String username = rs.getString("user");
+                try {
+                    orders.add(new Order(orderID, invoice, totalprice, orderDate, getUser(username)));
+                } catch (Exception ex) {
+                    Logger.getLogger(CupcakeShopDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+    public void addNewUser(User user) {
         try {
             Connection con = db.getConnection();
             PreparedStatement pStatement = con.prepareStatement(ADD_NEW_USER);
@@ -276,7 +304,7 @@ public void addNewUser(User user) {
         }
     }
 
-    private PreparedStatement addCupcakeDetails(LineItem item, int orderID){
+    private PreparedStatement addCupcakeDetails(LineItem item, int orderID) {
         try {
             Connection con = db.getConnection();
             PreparedStatement pStatement = con.prepareStatement(ADD_TO_CUPCAKEDETAILS);
@@ -290,7 +318,7 @@ public void addNewUser(User user) {
         }
         return null;
     }
-    
+
     public void addButtom(Bottom bottom) {
         try {
             Connection con = db.getConnection();
@@ -325,16 +353,15 @@ public void addNewUser(User user) {
             pStatement.setInt(1, basket.getTotalPrice());
             pStatement.setString(2, user.getUsername());
             pStatement.executeUpdate();
-            
+
             ArrayList<PreparedStatement> pStatements = new ArrayList();
-            for(int i = 0; i < basket.getBasket().size(); i++) {
+            for (int i = 0; i < basket.getBasket().size(); i++) {
                 pStatements.add(addCupcakeDetails(basket.getBasket().get(i), orderID));
                 pStatements.get(i).executeUpdate();
             }
             con.commit();
             con.setAutoCommit(true);
 
-            
         } catch (Exception e) {
             System.out.println(e);
         }
