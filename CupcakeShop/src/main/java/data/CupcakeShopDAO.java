@@ -30,10 +30,10 @@ public class CupcakeShopDAO {
     getToppings() x
     -----------
     addNewUser(User user) x
-    addCupcake(Cupcake cupcake)
+    addToOrder(Cupcake cupcake)
     addBottom(Bottom bottom) x
     addTopping(Topping topping) x
-    addOrder()
+    addOrder(ShoppingBasket basket, User user)
     
      */
     private final String GET_USER_BY_USERNAME = "SELECT username, password, balance FROM CupcakeShop.user WHERE username = ?";
@@ -44,10 +44,10 @@ public class CupcakeShopDAO {
     private final String GET_TOPPINGS = "SELECT toppingName, price FROM CupcakeShop.topping;";
 
     private final String ADD_NEW_USER = "INSERT INTO user(username,password,balance) VALUES (?,?,?)";
-    private final String ADD_CUPCAKE = "INSERT INTO cupcakeDetails(orderID, qty, topping, bottom) VALUES(?,?,?)";
+    private final String ADD_TO_ORDER = "INSERT INTO cupcakeDetails(qty, topping, bottom) VALUES(?,?,?)";
     private final String ADD_BOTTOM = "INSERT INTO bottom(bottomName, price) VALUES (?,?)";
     private final String ADD_TOPPING = "INSERT INTO topping(toppingName, price) VALUES (?,?)";
-    private final String ADD_ORDER = "";
+    private final String ADD_ORDER = "INSERT INTO order(invoice, price, status, user) VALUES (?,?,?,?)";
     private DBConnector db;
 
     public CupcakeShopDAO() {
@@ -227,19 +227,18 @@ public class CupcakeShopDAO {
         }
     }
 
-//    public void addCupcake(LineItem item){
-//        try {
-//            Connection con = db.getConnection();
-//            PreparedStatement pStatement = con.prepareStatement(ADD_TO_ORDER);
-////            pStatement.setInt(1, item.;
-//            pStatement.setInt(2, item.getQuantity());
-//            pStatement.setString(3, item.getCake().getTop());
-//            pStatement.setString(4, item.getCake().getBottom());
-//            pStatement.executeUpdate();
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        }
-//    }
+    public void addToORder(LineItem item){
+        try {
+            Connection con = db.getConnection();
+            PreparedStatement pStatement = con.prepareStatement(ADD_TO_ORDER);
+            pStatement.setInt(2, item.getQuantity());
+            pStatement.setString(3, item.getCake().getTop().getName());
+            pStatement.setString(4, item.getCake().getBottom().getName());
+            pStatement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
     
     public void addButtom(Bottom bottom) {
         try {
@@ -265,19 +264,18 @@ public class CupcakeShopDAO {
         }
     }
 
-//    public void addOrder() {
-//        try {
-//            Connection con = db.getConnection();
-//            PreparedStatement pStatement = con.prepareStatement(ADD_ORDER);
-//            pStatement.setInt(0, 0); 
-//            pStatement.setString();
-//            pStatement.setInt();
-//            pStatement.setString(); //ENUM
-//            pStatement.setString();
-//            pStatement.executeUpdate();
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        }
-//
-//    }
+    public void addOrder(LineItem item, ShoppingBasket basket, User user) {
+        try {
+            Connection con = db.getConnection();
+            PreparedStatement pStatement = con.prepareStatement(ADD_ORDER);
+            pStatement.setString(1, item.getInvoice_id());
+            pStatement.setInt(2, basket.getTotalPrice());
+            //pStatement.setString(3, ); //ENUM
+            pStatement.setString(4, user.getUsername());
+            pStatement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
 }

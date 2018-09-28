@@ -1,5 +1,7 @@
 DROP DATABASE IF EXISTS `CupcakeShop`;
 
+-- MySQL Workbench Forward Engineering
+
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
@@ -8,6 +10,17 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- Schema CupcakeShop
 -- -----------------------------------------------------
 
+-- -----------------------------------------------------
+-- Schema CupcakeShop
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `CupcakeShop` DEFAULT CHARACTER SET utf8 ;
+-- -----------------------------------------------------
+-- Schema CupcakeShop
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema CupcakeShop
+-- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `CupcakeShop` DEFAULT CHARACTER SET utf8 ;
 USE `CupcakeShop` ;
 
@@ -17,8 +30,7 @@ USE `CupcakeShop` ;
 CREATE TABLE IF NOT EXISTS `CupcakeShop`.`user` (
   `username` VARCHAR(8) NOT NULL,
   `password` VARCHAR(8) NOT NULL,
-  `email` VARCHAR(30) NOT NULL,
-  `balance` INT NULL,
+  `balance` INT NOT NULL,
   PRIMARY KEY (`username`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -28,7 +40,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `CupcakeShop`.`order`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CupcakeShop`.`order` (
-  `orderID` INT NOT NULL,
+  `orderID` INT NOT NULL AUTO_INCREMENT,
   `invoice` VARCHAR(45) NOT NULL,
   `price` INT NOT NULL,
   `status` ENUM('unfinished', 'finished') NOT NULL,
@@ -78,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `CupcakeShop`.`cupcakeDetails` (
   CONSTRAINT `fk_cupcakeDetails_order1`
     FOREIGN KEY (`orderID`)
     REFERENCES `CupcakeShop`.`order` (`orderID`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cupcakeDetails_topping1`
     FOREIGN KEY (`topping`)
