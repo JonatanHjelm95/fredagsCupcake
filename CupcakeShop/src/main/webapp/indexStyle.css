@@ -5,6 +5,7 @@ body {
     background-color: #9eb3d3;
     overflow: hidden;
     text-align: center;
+
 }
 
 .topnav a {
@@ -14,16 +15,28 @@ body {
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    display: inline-block;
+
 }
 .topnav #user{
     float: right;
     overflow: hidden;
     padding-right: 20px;
     padding-top: 7px;
+    display: inline-block;
+
 }
 .topnav #login{
     float: right;
+
+    display: inline-block;
 }
+
+.topnav #cartIcon{
+    float: right;
+    display: inline-block;
+}
+
 
 .topnav #header{
     float: center;
@@ -35,7 +48,7 @@ body {
     background-color: #ddd;
     color: black;
     text-decoration: none;
-
+    display: inline-block;
 }
 .topnav a.active {
     background-color: #647fa8;

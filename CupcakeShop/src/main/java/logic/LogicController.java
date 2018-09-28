@@ -26,8 +26,9 @@ public class LogicController {
             try {
                 user = (User) request.getSession(false).getAttribute("user");
                 menuHTML = "<a id=\"login\" href=\"?origin=logout\">logout</a>"
+                        + " <a id=\"cartIcon\" href =\"?origin=shopping cart\"><i style =\"font-size:21px\" class=\"fa\">&#xf07a;</i></a>"
                         + "<h4 id=\"user\" > Logged in as: " + user.getUsername()
-                        + " Balance: " + user.getBalance() + "</h4>\n";
+                        + " Balance: " + user.getBalance() + "</h4>\n"  ;
                 return menuHTML;
             } catch (NullPointerException ne) {
                 ne.printStackTrace();
