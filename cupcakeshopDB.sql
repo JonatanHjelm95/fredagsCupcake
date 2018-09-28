@@ -1,5 +1,4 @@
 DROP DATABASE IF EXISTS `CupcakeShop`;
-
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -41,9 +40,10 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CupcakeShop`.`order` (
   `orderID` INT NOT NULL AUTO_INCREMENT,
-  `invoice` VARCHAR(45) NOT NULL,
+  `invoice` VARCHAR(45) NULL,
   `price` INT NOT NULL,
-  `status` ENUM('unfinished', 'finished') NOT NULL,
+  `status` ENUM('unfinished', 'finished') NULL,
+  `orderDate` DATETIME NULL,
   `user` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`orderID`, `user`),
   INDEX `fk_order_user_idx` (`user` ASC),

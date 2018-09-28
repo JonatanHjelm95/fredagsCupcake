@@ -28,6 +28,7 @@ public class CupcakeShopDAO {
     getBottoms() x
     getTopoing() x
     getToppings() x
+    getAllOrders()
     -----------
     addNewUser(User user) x
     addToCupcakeDetails(LineItem item)
@@ -42,14 +43,15 @@ public class CupcakeShopDAO {
     private final String GET_BOTTOMS = "SELECT bottomName, price FROM CupcakeShop.bottom;";
     private final String GET_TOPPING = "SELECT toppingName, price FROM CupcakeShop.topping Where toppingName = ?";
     private final String GET_TOPPINGS = "SELECT toppingName, price FROM CupcakeShop.topping;";
-    private final String GET_NEXT_ORDERID = "SELECT `auto_increment` FROM INFORMATION_SCHEMA.TABLES\n" +"WHERE table_name = 'order'";
-    
+    private final String GET_NEXT_ORDERID = "SELECT `auto_increment` FROM INFORMATION_SCHEMA.TABLES\n" + "WHERE table_name = 'order'";
+    private final String GET_ALL_ORDERS = "SELECT orderID, invoice, price, orderDate, user FROM `order`;";
+
     private final String ADD_NEW_USER = "INSERT INTO user(username,password,balance) VALUES (?,?,?)";
     private final String ADD_TO_CUPCAKEDETAILS = "INSERT INTO cupcakeDetails(orderID, qty, topping, bottom) VALUES(?,?,?,?)";
     private final String ADD_BOTTOM = "INSERT INTO bottom(bottomName, price) VALUES (?,?)";
     private final String ADD_TOPPING = "INSERT INTO topping(toppingName, price) VALUES (?,?)";
     private final String ADD_ORDER = "INSERT INTO `order`(price, user) VALUES (?,?)";
-    
+
     private DBConnector db;
 
     public CupcakeShopDAO() {
@@ -215,9 +217,10 @@ public class CupcakeShopDAO {
         }
         return toppings;
     }
+
     public int getNextOrderID() {
         int orderID;
-        
+
         try {
             Connection con = db.getConnection();
             PreparedStatement pStatement = con.prepareStatement(GET_NEXT_ORDERID);
@@ -230,11 +233,33 @@ public class CupcakeShopDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return -1;
     }
 
-    public void addNewUser(User user) {
+    public ArrayList<Order> getAllOrders() {
+        ArrayList<Order> orders = new ArrayList();
+        try {
+            Connection con = db.getConnection();
+            PreparedStatement pStatement = con.prepareStatement(GET_ALL_ORDERS);
+            ResultSet rs = pStatement.executeQuery();
+
+            while (rs.next()) {
+                int orderID = rs.getInt("orderID");
+                String invoice = rs.getString("invoice");
+                int totalprice = rs.getInt("price");
+              //String status = rs.getString("status");
+                String orderDate = rs.getString("orderDate");
+                String user = rs.getString("user");
+                orders.add(new Order(orderID, invoice, totalprice, orderDate, getUser(user)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+public void addNewUser(User user) {
         try {
             Connection con = db.getConnection();
             PreparedStatement pStatement = con.prepareStatement(ADD_NEW_USER);
@@ -291,7 +316,7 @@ public class CupcakeShopDAO {
             Connection con = db.getConnection();
             int orderID = getNextOrderID();
             System.out.println(orderID);
-            //con.setAutoCommit(false);
+            con.setAutoCommit(false);
             PreparedStatement pStatement = con.prepareStatement(ADD_ORDER);
             pStatement.setInt(1, basket.getTotalPrice());
             pStatement.setString(2, user.getUsername());
@@ -302,8 +327,8 @@ public class CupcakeShopDAO {
                 pStatements.add(addCupcakeDetails(basket.getBasket().get(i), orderID));
                 pStatements.get(i).executeUpdate();
             }
-            //con.commit();
-            //con.setAutoCommit(true);
+            con.commit();
+            con.setAutoCommit(true);
 
             
         } catch (Exception e) {

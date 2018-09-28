@@ -18,12 +18,12 @@ values ('Chocolate', 5),
 ('Lemon', 8),
 ('Blue Cheese', 9);
 
-insert into CupcakeShop.user
+insert into CupcakeShop.`user`
 values('hans123', 'hotdog45', 50), ('davsdu', 'nejtakdu', 100);
 
-insert into `order`
-values (42, 'Blbalbalblabla', 10, 'unfinished', 'hans123'), (30, 'Hutlihu', 12, 'finished', 'davsdu'); 
+insert into `order`(invoice, price, `status`, `user`)
+values ('Blbalbalblabla', 10, 'unfinished', 'hans123'), ('Hutlihu', 12, 'finished', 'davsdu'); 
 
 
 insert into cupcakeDetails
-values (42, 1, 'Chocolate', 'Chocolate'), (30, 1,'Blueberry', 'Almond');
+values (1, 1, 'Chocolate', 'Chocolate'), (2, 1,'Blueberry', 'Almond');
