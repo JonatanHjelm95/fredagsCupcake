@@ -6,6 +6,8 @@
 package logic;
 
 import data.Bottom;
+import data.LineItem;
+import data.ShoppingBasket;
 import data.Topping;
 import data.User;
 import java.util.ArrayList;
@@ -26,9 +28,9 @@ public class LogicController {
             try {
                 user = (User) request.getSession(false).getAttribute("user");
                 menuHTML = "<a id=\"login\" href=\"?origin=logout\">logout</a>"
-                        + " <a id=\"cartIcon\" href =\"?origin=shopping cart\"><i style =\"font-size:21px\" class=\"fa\">&#xf07a;</i></a>"
+                        + " <a id=\"cartIcon\" href =\"?origin=shoppingbasket\"><i style =\"font-size:21px\" class=\"fa\">&#xf07a;</i></a>"
                         + "<h4 id=\"user\" > Logged in as: " + user.getUsername()
-                        + " Balance: " + user.getBalance() + "</h4>\n"  ;
+                        + " Balance: " + user.getBalance() + " kr</h4>\n"  ;
                 return menuHTML;
             } catch (NullPointerException ne) {
                 ne.printStackTrace();
@@ -42,7 +44,7 @@ public class LogicController {
     public String generateBottom(ArrayList<Bottom> bottoms) {
         String bottomsDropdown = "<select name='bottom' form='extras'>";
         for (int i = 0; i < bottoms.size(); i++) {
-            bottomsDropdown += "<option value='" + bottoms.get(i).getName() + "'>" + bottoms.get(i).getName() + ", " + bottoms.get(i).getPrice() + "</option>";
+            bottomsDropdown += "<option value='" + bottoms.get(i).getName() + "'>" + bottoms.get(i).getName() + ", " + bottoms.get(i).getPrice() + " kr</option>";
         }
         bottomsDropdown += "</select>";
         System.out.println(bottomsDropdown);
@@ -52,10 +54,24 @@ public class LogicController {
     public String generateTopping(ArrayList<Topping> toppings) {
         String toppingsDropdown = "<select name='topping' form='extras'>";
         for (int i = 0; i < toppings.size(); i++) {
-            toppingsDropdown += "<option value='" + toppings.get(i).getName() + "'>" + toppings.get(i).getName() + ", " + toppings.get(i).getPrice() + "</option>";
+            toppingsDropdown += "<option value='" + toppings.get(i).getName() + "'>" + toppings.get(i).getName() + ", " + toppings.get(i).getPrice() + " kr</option>";
         }
         toppingsDropdown += "</select>";
         return toppingsDropdown;
+    }
+    
+    public String generateShoppingCart(ShoppingBasket sb){
+        ArrayList<LineItem> products = sb.getBasket();
+        int totalPrice = 0;
+        String cartTable = "<table id=\"shoppingCart\">" + 
+                "<tr><th>Product</th><th>Quantity</th><th>Price</th></tr>";
+        for (int i = 0; i < products.size(); i++) {
+            cartTable += "<tr><td>"+products.get(i).getCake()+"</td>"
+                    + "<td>"+products.get(i).getQuantity()+"</td>"
+                    + "<td>"+sb.getTotalPrice()+"</td></tr>";
+        }
+        cartTable += "</table>";
+        return cartTable;
     }
 
 }

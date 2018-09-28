@@ -27,6 +27,7 @@ public class ShoppingBasket {
     }
 
     public int getTotalPrice() {
+        totalPrice = 0;
         for (int i = 0; i < basket.size(); i++) {
             totalPrice += (basket.get(i).getCake().getFullPrice()*basket.get(i).getQuantity());
         }

@@ -25,19 +25,21 @@
         <div class="topnav">
             <%=request.getAttribute("html")%>
 
-            <h1 id="header" >Products</h1>
+            <h1 id="header" >Shopping Cart</h1>
 
             <a id="home"  href="?origin=index">Home</a>
             <a id="products" class="active" href=#?origin=products">Products</a>
         </div>
         <h1>Shopping Cart</h1>
         <div>
-            <%
-                ShoppingBasket sb = (ShoppingBasket) request.getSession().getAttribute("shoppingbasket");
-                for (LineItem item : sb.getBasket()) {
-                    out.println("<li>" + item + "</li>");
-                }
-            %>
+            <form action="Control" method="POST" id="checkout">
+                <%=request.getAttribute("cartContent") // ShoppingBasket sb = (ShoppingBasket) request.getSession().getAttribute("shoppingbasket");
+                        // for (LineItem item : sb.getBasket()) {
+                        //     out.println("<li>" + item + "</li>");
+                    // }
+                    %>
+                <input type="submit" value="checkout">
+            </form>
         </div>
     </body>
 </html>

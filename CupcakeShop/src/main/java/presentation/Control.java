@@ -91,15 +91,17 @@ public class Control extends HttpServlet {
                         generateHtmlMenu(request);
                         ArrayList<Bottom> bottoms = dao.getBottoms();
                         ArrayList<Topping> toppings = dao.getToppings();
-                        
+
                         request.setAttribute("bottoms", lc.generateBottom(bottoms));
                         request.setAttribute("toppings", lc.generateTopping(toppings));
-                        
+
                         request.getRequestDispatcher("products.jsp").forward(request, response);
                         break;
                     case "addtocart":
                         generateHtmlMenu(request);
-
+                        if(request.getSession(false) == null) {
+                            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+                        }
                         if (request.getSession(false) != null) {
                             String bottomName = request.getParameter("bottom");
                             String toppingName = request.getParameter("topping");
@@ -116,11 +118,20 @@ public class Control extends HttpServlet {
                             ShoppingBasket sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
                             sb.addItem(new LineItem(new CupCake(topping, bottom), qty));
                             request.getSession(false).setAttribute("shoppingbasket", sb);
+                            request.setAttribute("cartContent", lc.generateShoppingCart(sb));
                             request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
                         } else {
                             request.setAttribute("error", "not logged in");
                             request.getRequestDispatcher("errorPage.jsp").forward(request, response);
                         }
+                        break;
+                    case "shoppingbasket":
+                        generateHtmlMenu(request);
+                        ShoppingBasket sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
+
+                        request.setAttribute("cartContent", lc.generateShoppingCart(sb));
+
+                        request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
                         break;
                     default:
                         generateHtmlMenu(request);
