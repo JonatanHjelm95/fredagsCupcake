@@ -26,8 +26,15 @@ public class DAOtest {
         } catch (Exception ex) {
             System.out.println("User didnt exist");
         }
-        System.out.println(user);
-        System.out.println(user2);
+        ShoppingBasket sb = new ShoppingBasket();
+        try {
+            sb.addItem(new LineItem(new CupCake(dao.getTopping("Blue Cheese"),dao.getBottom("Nutmeg")), 1));
+            sb.addItem(new LineItem(new CupCake(dao.getTopping("Blue Cheese"),dao.getBottom("Almond")), 2));
+            sb.addItem(new LineItem(new CupCake(dao.getTopping("Crispy"),dao.getBottom("Vanilla")), 4));
+        } catch (Exception ex) {
+            Logger.getLogger(DAOtest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dao.addOrder(sb, user);
     }
 
 }
