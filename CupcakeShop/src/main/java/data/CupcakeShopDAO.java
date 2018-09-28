@@ -33,6 +33,7 @@ public class CupcakeShopDAO {
     addCupcake(Cupcake cupcake)
     addBottom(Bottom bottom) x
     addTopping(Topping topping) x
+    addOrder()
     
      */
     private final String GET_USER_BY_USERNAME = "SELECT username, password, balance FROM CupcakeShop.user WHERE username = ?";
@@ -46,6 +47,7 @@ public class CupcakeShopDAO {
     private final String ADD_CUPCAKE = "INSERT INTO cupcakeDetails(orderID, qty, topping, bottom) VALUES(?,?,?)";
     private final String ADD_BOTTOM = "INSERT INTO bottom(bottomName, price) VALUES (?,?)";
     private final String ADD_TOPPING = "INSERT INTO topping(toppingName, price) VALUES (?,?)";
+    private final String ADD_ORDER = "";
     private DBConnector db;
 
     public CupcakeShopDAO() {
@@ -225,19 +227,20 @@ public class CupcakeShopDAO {
         }
     }
 
-//    public void addCupcake(CupCake cupcake){
+//    public void addCupcake(LineItem item){
 //        try {
 //            Connection con = db.getConnection();
-//            PreparedStatement pStatement = con.prepareStatement(ADD_CUPCAKE);
-//            pStatement.setInt(1, cupcake.;
-//            pStatement.setInt(2, cupcake.);
-//            pStatement.setString(3, cupcake.);
-//            pStatement.setString(4, cupcake.);
+//            PreparedStatement pStatement = con.prepareStatement(ADD_TO_ORDER);
+////            pStatement.setInt(1, item.;
+//            pStatement.setInt(2, item.getQuantity());
+//            pStatement.setString(3, item.getCake().getTop());
+//            pStatement.setString(4, item.getCake().getBottom());
 //            pStatement.executeUpdate();
 //        } catch (Exception e) {
 //            System.out.println(e);
 //        }
 //    }
+    
     public void addButtom(Bottom bottom) {
         try {
             Connection con = db.getConnection();
@@ -261,4 +264,20 @@ public class CupcakeShopDAO {
             System.out.println(e);
         }
     }
+
+//    public void addOrder() {
+//        try {
+//            Connection con = db.getConnection();
+//            PreparedStatement pStatement = con.prepareStatement(ADD_ORDER);
+//            pStatement.setInt(0, 0); 
+//            pStatement.setString();
+//            pStatement.setInt();
+//            pStatement.setString(); //ENUM
+//            pStatement.setString();
+//            pStatement.executeUpdate();
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+//
+//    }
 }
