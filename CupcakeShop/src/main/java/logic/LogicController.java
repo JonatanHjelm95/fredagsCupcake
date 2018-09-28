@@ -5,6 +5,8 @@
  */
 package logic;
 
+import data.Bottom;
+import data.Topping;
 import data.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ public class LogicController {
                         + "<h4 id=\"user\" > Logged in as: " + user.getUsername()
                         + " Balance: " + user.getBalance() + "</h4>\n";
                 return menuHTML;
-            } catch(NullPointerException ne) {
+            } catch (NullPointerException ne) {
                 ne.printStackTrace();
             }
         }
@@ -35,6 +37,24 @@ public class LogicController {
                 + "<a id=\"login\" href=\"?origin=login\">Login</a>";
         return menuHTML;
     }
-    
+
+    public String generateBottom(ArrayList<Bottom> bottoms) {
+        String bottomsDropdown = "<select name='bottom' form='extras'>";
+        for (int i = 0; i < bottoms.size(); i++) {
+            bottomsDropdown += "<option value='" + bottoms.get(i).getName() + "'>" + bottoms.get(i).getName() + ", " + bottoms.get(i).getPrice() + "</option>";
+        }
+        bottomsDropdown += "</select>";
+        System.out.println(bottomsDropdown);
+        return bottomsDropdown;
+    }
+
+    public String generateTopping(ArrayList<Topping> toppings) {
+        String toppingsDropdown = "<select name='topping' form='extras'>";
+        for (int i = 0; i < toppings.size(); i++) {
+            toppingsDropdown += "<option value='" + toppings.get(i).getName() + "'>" + toppings.get(i).getName() + ", " + toppings.get(i).getPrice() + "</option>";
+        }
+        toppingsDropdown += "</select>";
+        return toppingsDropdown;
+    }
 
 }

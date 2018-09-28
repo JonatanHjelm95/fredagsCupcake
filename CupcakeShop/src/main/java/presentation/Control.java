@@ -53,7 +53,7 @@ public class Control extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String origin = request.getParameter("origin");
-
+            LogicController lc = new LogicController();
             if (origin != null) {
                 switch (origin) {
                     case "login":
@@ -89,9 +89,12 @@ public class Control extends HttpServlet {
                         break;
                     case "products":
                         generateHtmlMenu(request);
-
-                        request.setAttribute("bottoms", dao.getBottoms());
-                        request.setAttribute("toppings", dao.getToppings());
+                        ArrayList<Bottom> bottoms = dao.getBottoms();
+                        ArrayList<Topping> toppings = dao.getToppings();
+                        
+                        request.setAttribute("bottoms", lc.generateBottom(bottoms));
+                        request.setAttribute("toppings", lc.generateTopping(toppings));
+                        
                         request.getRequestDispatcher("products.jsp").forward(request, response);
                         break;
                     case "addtocart":
