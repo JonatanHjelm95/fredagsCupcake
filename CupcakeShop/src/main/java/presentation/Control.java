@@ -57,19 +57,29 @@ public class Control extends HttpServlet {
             if (origin != null) {
                 switch (origin) {
                     case "login":
+                        generateHtmlMenu(request);
+
                         request.getRequestDispatcher("login.jsp").forward(request, response);
                         break;
                     case "logout":
                         request.getSession(false).invalidate();
+                        generateHtmlMenu(request);
+
                         request.getRequestDispatcher("login.jsp").forward(request, response);
                         break;
                     case "check password":
+                        generateHtmlMenu(request);
+
                         checkPassword(request, response);
                         break;
                     case "signup":
+                        generateHtmlMenu(request);
+
                         request.getRequestDispatcher("signUp.jsp").forward(request, response);
                         break;
                     case "create user":
+                        generateHtmlMenu(request);
+
                         createUser(request, response);
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
@@ -78,11 +88,15 @@ public class Control extends HttpServlet {
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
                     case "products":
+                        generateHtmlMenu(request);
+
                         request.setAttribute("bottoms", dao.getBottoms());
                         request.setAttribute("toppings", dao.getToppings());
                         request.getRequestDispatcher("products.jsp").forward(request, response);
                         break;
                     case "addtocart":
+                        generateHtmlMenu(request);
+
                         if (request.getSession(false) != null) {
                             String bottomName = request.getParameter("bottom");
                             String toppingName = request.getParameter("topping");
@@ -97,7 +111,7 @@ public class Control extends HttpServlet {
                                 Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             ShoppingBasket sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
-                            sb.addItem(new LineItem(new CupCake(topping, bottom),qty));
+                            sb.addItem(new LineItem(new CupCake(topping, bottom), qty));
                             request.getSession(false).setAttribute("shoppingbasket", sb);
                             request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
                         } else {
