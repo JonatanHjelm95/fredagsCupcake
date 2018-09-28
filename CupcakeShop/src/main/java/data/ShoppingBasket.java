@@ -25,7 +25,7 @@ public class ShoppingBasket {
     public ShoppingBasket() {
         basket = new ArrayList();
     }
-
+    
     public int getTotalPrice() {
         totalPrice = 0;
         for (int i = 0; i < basket.size(); i++) {

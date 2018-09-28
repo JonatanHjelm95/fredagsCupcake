@@ -68,9 +68,9 @@ public class LogicController {
         for (int i = 0; i < products.size(); i++) {
             cartTable += "<tr><td>"+products.get(i).getCake()+"</td>"
                     + "<td>"+products.get(i).getQuantity()+"</td>"
-                    + "<td>"+sb.getTotalPrice()+"</td></tr>";
+                    + "<td>"+products.get(i).getCake().getFullPrice()+" kr</td></tr>";
         }
-        cartTable += "</table>";
+        cartTable += "<tr id=\"totalPrice\" ><td>Total Price</td><td></td><td>"+sb.getTotalPrice()+" kr</td></tr></table>";
         return cartTable;
     }
 

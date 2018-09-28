@@ -54,8 +54,16 @@ body {
     background-color: #647fa8;
     color: white;
 }
-
-.shoppingCart {
-    
+tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
+tr:last-child {
+    background-color: #a9a9a9;
+}
+
+
+#shoppingCart {
+    width: 100%
+}
+
 ﻿

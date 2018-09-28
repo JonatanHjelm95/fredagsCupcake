@@ -19,7 +19,7 @@ public class CupCake {
         this.name = top.getName() + bottom.getName();
         this.top = top;
         this.bottom = bottom;
-        this.fullPrice = top.getPrice() + bottom.getPrice();
+        this.fullPrice = top.getPrice()+ bottom.getPrice();
     }
 
     public String getName() {
