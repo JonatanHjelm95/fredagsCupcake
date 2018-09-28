@@ -87,44 +87,10 @@ public class Control extends HttpServlet {
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
                     case "products":
-                        generateHtmlMenu(request);
-                        ArrayList<Bottom> bottoms = dao.getBottoms();
-                        ArrayList<Topping> toppings = dao.getToppings();
-
-                        request.setAttribute("bottoms", lc.generateBottom(bottoms));
-                        request.setAttribute("toppings", lc.generateTopping(toppings));
-
-                        request.getRequestDispatcher("products.jsp").forward(request, response);
+                        executeProducts(request, lc, response);
                         break;
                     case "addtocart":
-                        generateHtmlMenu(request);
-                        if (request.getSession(false) == null) {
-                            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
-                        }
-                        if (request.getSession(false) != null) {
-                            String bottomName = request.getParameter("bottom");
-                            String toppingName = request.getParameter("topping");
-                            int qty = Integer.parseInt(request.getParameter("qty"));
-                            System.out.println(bottomName + " " + toppingName);
-                            Bottom bottom = null;
-                            Topping topping = null;
-                            //int qty = 1;
-                            try {
-                                bottom = dao.getBottom(bottomName);
-                                topping = dao.getTopping(toppingName);
-
-                                ShoppingBasket sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
-                                sb.addItem(new LineItem(new CupCake(topping, bottom), qty));
-                                request.getSession(false).setAttribute("shoppingbasket", sb);
-                                request.setAttribute("cartContent", lc.generateShoppingCart(sb));
-                            } catch (Exception ex) {
-                                Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
-                        } else {
-                            request.setAttribute("error", "not logged in");
-                            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
-                        }
+                        executeAddToCart(request, response, lc);
                         break;
                     case "shoppingbasket":
                         generateHtmlMenu(request);
@@ -166,6 +132,48 @@ public class Control extends HttpServlet {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         }
+    }
+
+    private void executeAddToCart(HttpServletRequest request, HttpServletResponse response, LogicController lc) throws IOException, NumberFormatException, ServletException {
+        generateHtmlMenu(request);
+        if (request.getSession(false) == null) {
+            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+        }
+        if (request.getSession(false) != null) {
+            String bottomName = request.getParameter("bottom");
+            String toppingName = request.getParameter("topping");
+            int qty = Integer.parseInt(request.getParameter("qty"));
+            System.out.println(bottomName + " " + toppingName);
+            Bottom bottom = null;
+            Topping topping = null;
+            //int qty = 1;
+            try {
+                bottom = dao.getBottom(bottomName);
+                topping = dao.getTopping(toppingName);
+                
+                ShoppingBasket sb = (ShoppingBasket) request.getSession(false).getAttribute("shoppingbasket");
+                sb.addItem(new LineItem(new CupCake(topping, bottom), qty));
+                request.getSession(false).setAttribute("shoppingbasket", sb);
+                request.setAttribute("cartContent", lc.generateShoppingCart(sb));
+            } catch (Exception ex) {
+                Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
+        } else {
+            request.setAttribute("error", "not logged in");
+            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+        }
+    }
+
+    private void executeProducts(HttpServletRequest request, LogicController lc, HttpServletResponse response) throws ServletException, IOException {
+        generateHtmlMenu(request);
+        ArrayList<Bottom> bottoms = dao.getBottoms();
+        ArrayList<Topping> toppings = dao.getToppings();
+        
+        request.setAttribute("bottoms", lc.generateBottom(bottoms));
+        request.setAttribute("toppings", lc.generateTopping(toppings));
+        
+        request.getRequestDispatcher("products.jsp").forward(request, response);
     }
 
     private void generateHtmlMenu(HttpServletRequest request) {
