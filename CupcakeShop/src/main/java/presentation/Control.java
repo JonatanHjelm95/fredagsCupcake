@@ -86,6 +86,7 @@ public class Control extends HttpServlet {
                         if (request.getSession(false) != null) {
                             String bottomName = request.getParameter("bottom");
                             String toppingName = request.getParameter("topping");
+                            System.out.println(bottomName + " " + toppingName);
                             Bottom bottom = null;
                             Topping topping = null;
                             int qty = 1;
