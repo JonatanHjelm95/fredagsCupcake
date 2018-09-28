@@ -251,7 +251,11 @@ public class CupcakeShopDAO {
               //String status = rs.getString("status");
                 String orderDate = rs.getString("orderDate");
                 String user = rs.getString("user");
-                orders.add(new Order(orderID, invoice, totalprice, orderDate, getUser(user)));
+                try {
+                    orders.add(new Order(orderID, invoice, totalprice, orderDate, getUser(user)));
+                } catch (Exception ex) {
+                    Logger.getLogger(CupcakeShopDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
