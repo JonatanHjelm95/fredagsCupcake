@@ -133,6 +133,14 @@ public class Control extends HttpServlet {
             }
         }
     }
+    
+    /**
+     * @param request servlet request
+     * @param response servlet response
+     * @param lc LogicController
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
 
     private void executeAddToCart(HttpServletRequest request, HttpServletResponse response, LogicController lc) throws IOException, NumberFormatException, ServletException {
         generateHtmlMenu(request);
@@ -164,6 +172,15 @@ public class Control extends HttpServlet {
             request.getRequestDispatcher("errorPage.jsp").forward(request, response);
         }
     }
+    
+    /**
+     * @param request servlet request
+     * @param response servlet response
+     * @param lc LogicController
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+
 
     private void executeProducts(HttpServletRequest request, LogicController lc, HttpServletResponse response) throws ServletException, IOException {
         generateHtmlMenu(request);
@@ -176,12 +193,21 @@ public class Control extends HttpServlet {
         request.getRequestDispatcher("products.jsp").forward(request, response);
     }
 
+    /**
+     * @param request servlet request
+     */
+
     private void generateHtmlMenu(HttpServletRequest request) {
         LogicController lc = new LogicController();
         String html = lc.generateMenu(request);
         request.setAttribute("html", html);
     }
-
+    /**
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     private void checkPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = null;
         String username = request.getParameter("username");
@@ -200,6 +226,14 @@ public class Control extends HttpServlet {
             request.getRequestDispatcher("errorPage.jsp").forward(request, response);
         }
     }
+    
+    /**
+     * @param request servlet request
+     * @param response servlet response
+     * @param user User
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
 
     private void succesfulLogin(HttpServletRequest request, User user, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(true);
@@ -208,6 +242,14 @@ public class Control extends HttpServlet {
         generateHtmlMenu(request);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
+    
+    /**
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws NumberFormatException if NumberFormatException occurs
+     */
 
     private void createUser(HttpServletRequest request, HttpServletResponse response) throws NumberFormatException, ServletException, IOException {
         String username = request.getParameter("username");
