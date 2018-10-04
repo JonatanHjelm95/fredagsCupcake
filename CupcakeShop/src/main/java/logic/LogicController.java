@@ -21,6 +21,10 @@ import javax.servlet.http.HttpSession;
  */
 public class LogicController {
 
+    /**
+     * @param request Request containing an optional session
+     * @return String Generated menu bar, determined by session
+     */
     public String generateMenu(HttpServletRequest request) {
         String menuHTML = "";
         User user = null;
@@ -41,16 +45,24 @@ public class LogicController {
         return menuHTML;
     }
 
+    /**
+     * @param bottoms ArrayList containing the bottom-part of a cupcake
+     * @return String Generated dropdown containing bottom-values
+     */
     public String generateBottom(ArrayList<Bottom> bottoms) {
         String bottomsDropdown = "<select name='bottom' form='extras'>";
         for (int i = 0; i < bottoms.size(); i++) {
             bottomsDropdown += "<option value='" + bottoms.get(i).getName() + "'>" + bottoms.get(i).getName() + ", " + bottoms.get(i).getPrice() + " kr</option>";
         }
         bottomsDropdown += "</select>";
-        System.out.println(bottomsDropdown);
         return bottomsDropdown;
     }
 
+    /**
+     * @param toppings ArrayList containing the top-part of a cupcake
+     * @return String Generated dropdown containing top-values
+     * @return String dropdown containing quantity-values
+     */
     public String generateTopping(ArrayList<Topping> toppings) {
         String toppingsDropdown = "<select name='topping' form='extras'>";
         for (int i = 0; i < toppings.size(); i++) {
@@ -72,6 +84,10 @@ public class LogicController {
         return toppingsDropdown;
     }
 
+    /**
+     * @param sb ShoppingBasket containing an ArrayList of LineItems
+     * @return String Generated table containing LineItems
+     */
     public String generateShoppingCart(ShoppingBasket sb) {
         ArrayList<LineItem> products = sb.getBasket();
         int totalPrice = 0;
