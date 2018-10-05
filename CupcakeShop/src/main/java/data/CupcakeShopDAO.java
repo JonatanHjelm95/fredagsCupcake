@@ -222,6 +222,10 @@ public class CupcakeShopDAO {
         return toppings;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNextOrderID() {
         int orderID;
 
@@ -241,6 +245,10 @@ public class CupcakeShopDAO {
         return -1;
     }
 
+    /**
+     *Gets all orders from the database
+     * @return arraylist of all orders
+     */
     public ArrayList<Order> getAllOrders() {
         ArrayList<Order> orders = new ArrayList();
         try {
@@ -267,6 +275,11 @@ public class CupcakeShopDAO {
         return orders;
     }
 
+    /**
+     *Gets the orders for a specific user or throws exception
+     * @param user
+     * @return the users orders
+     */
     public ArrayList<Order> getAllOrdersByUser(User user) {
         ArrayList<Order> orders = new ArrayList();
         try {
@@ -293,6 +306,10 @@ public class CupcakeShopDAO {
         return orders;
     }
 
+    /**
+     *Adds a new user or throws exception
+     * @param user
+     */
     public void addNewUser(User user) {
         try {
             Connection con = db.getConnection();
@@ -321,6 +338,10 @@ public class CupcakeShopDAO {
         return null;
     }
 
+    /**
+     *Adds a bottom to the database or throws exception
+     * @param bottom
+     */
     public void addButtom(Bottom bottom) {
         try {
             Connection con = db.getConnection();
@@ -332,7 +353,10 @@ public class CupcakeShopDAO {
             System.out.println(e);
         }
     }
-
+/**
+     *Adds a topping to the database or throws exception
+     * @param topping
+     */
     public void addTopping(Topping topping) {
         try {
             Connection con = db.getConnection();
@@ -344,7 +368,11 @@ public class CupcakeShopDAO {
             System.out.println(e);
         }
     }
-
+/**
+     *Adds a order to the database or throws exception
+     * @param basket
+     * @param user
+     */
     public void addOrder(ShoppingBasket basket, User user) {
         try {
             Connection con = db.getConnection();
@@ -370,6 +398,10 @@ public class CupcakeShopDAO {
 
     }
 
+    /**
+     *Updates a users balance in the database
+     * @param user
+     */
     public void updateUser(User user) {
         try {
             Connection con = db.getConnection();

@@ -15,6 +15,10 @@ public class DBConnector {
     private static final String USERNAME = "transformer";
     private static final String PASSWORD = "transformerpass";
 
+    /**
+     *
+     * @throws Exception
+     */
     public DBConnector() throws Exception {
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         String url = "jdbc:mysql://" + IP + ":" + PORT + "/" + DATABASE + "?autoReconnect=true&useSSL=false";

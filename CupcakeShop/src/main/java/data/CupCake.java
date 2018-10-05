@@ -15,6 +15,11 @@ public class CupCake {
    private Bottom bottom;
    private int fullPrice;
 
+    /**
+     *Constructor for a cupcake
+     * @param top
+     * @param bottom
+     */
     public CupCake(Topping top, Bottom bottom) {
         this.name = top.getName() + bottom.getName();
         this.top = top;
@@ -22,18 +27,34 @@ public class CupCake {
         this.fullPrice = top.getPrice()+ bottom.getPrice();
     }
 
+    /**
+     * 
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @return top
+     */
     public Topping getTop() {
         return top;
     }
 
+    /**
+     *
+     * @return bottom
+     */
     public Bottom getBottom() {
         return bottom;
     }
 
+    /**
+     *
+     * @return full price of cupcake
+     */
     public int getFullPrice() {
         return fullPrice;
     }
