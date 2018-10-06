@@ -31,7 +31,7 @@
         <form action="Control" method="POST">
             <input type="text" name="username" placeholder="username"/>
             <br>
-            <input type="text" name="password" placeholder="password"/>
+            <input type="password" name="password" placeholder="password"/>
             <br>
             <input type="text" name="balance" placeholder="add to balance"/>
             <br>
